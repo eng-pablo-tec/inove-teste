@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Inove Teste</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f1c2f;
+      color: white;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background: white;
+      color: black;
+    }
+
+    header img {
+      height: 40px;
+    }
+
+    header .menu-btn {
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -250px;
+      width: 250px;
+      height: 100%;
+      background: #111;
+      color: white;
+      padding: 20px;
+      transition: left 0.3s;
+      z-index: 1000;
+    }
+
+    .sidebar a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      margin: 15px 0;
+    }
+
+    .sidebar.show {
+      left: 0;
+    }
+
+    .content {
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .formulario {
+      display: none;
+      max-width: 500px;
+      background: white;
+      color: black;
+      padding: 20px;
+      margin: 20px auto;
+      border-radius: 5px;
+    }
+
+    .formulario input,
+    .formulario textarea {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+    }
+
+    .erro {
+      color: red;
+      font-size: 14px;
+      margin-top: -8px;
+      margin-bottom: 10px;
+    }
+
+    /* Página restrita */
+    .restrita {
+      display: none;
+      max-width: 600px;
+      margin: 50px auto;
+      background: #1c2a40;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.1);
+      text-align: center;
+    }
+
+    .restrita h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    .logoff-btn {
+      margin-top: 30px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: crimson;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .logoff-btn:hover {
+      background-color: #b1002f;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar" id="sidebar">
+    <a href="#" onclick="mostrarConteudo('inicio')">Início</a>
+    <a href="#">Blog</a>
+    <a href="#">Fórum</a>
+    <a href="#" onclick="mostrarConteudo('contato')">Contato</a>
+    <a href="#">Loja</a>
+    <a href="#" onclick="mostrarRestrita()">Minha conta</a>
+  </div>
+
+  <header>
+    <div><img src="https://inoveteste.com.br/img/logo.png" alt="Inove Teste"></div>
+    <div class="menu-btn" onclick="toggleMenu()">☰ Menu</div>
+  </header>
+
+  <!-- Início -->
+  <div class="content" id="inicio">
+    <h1>Inovando a sua forma de testar software</h1>
+    <p>
+      Automatizando Testes de Software com Selenium é um manual prático voltado para todos os profissionais e empresas da área de sistemas que almejam melhorar a qualidade dos seus serviços e/ou produtos de forma simples, eficiente e com baixo custo.
+    </p>
+    <p>
+      Neste livro, você encontrará todos os recursos que a ferramenta Selenium disponibiliza para implementar um ambiente robusto de testes automatizados, como por exemplo: gravação/execução de scripts de teste, exportação/importação de scripts de teste em um projeto de teste, execução simultânea de testes...
+    </p>
+  </div>
+
+  <!-- Contato -->
+  <div class="formulario" id="contato">
+    <h2>Envie uma mensagem</h2>
+    <form onsubmit="return validarFormulario()">
+      <input type="text" id="nome" placeholder="Nome">
+      <div id="erro-nome" class="erro"></div>
+
+      <input type="email" id="email" placeholder="E-mail">
+      <div id="erro-email" class="erro"></div>
+
+      <input type="text" id="assunto" placeholder="Assunto">
+      <div id="erro-assunto" class="erro"></div>
+
+      <textarea id="mensagem" rows="5" placeholder="Mensagem"></textarea>
+      <div id="erro-mensagem" class="erro"></div>
+
+      <button type="submit">Enviar</button>
+    </form>
+  </div>
+
+  <!-- Página restrita -->
+  <div class="restrita" id="restrita">
+    <h1 id="boasVindas">Seja bem-vindo!</h1>
+    <button class="logoff-btn" onclick="fazerLogoff()">Logoff</button>
+  </div>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById("sidebar").classList.toggle("show");
+    }
+
+    function mostrarConteudo(id) {
+      const seções = ["inicio", "contato", "restrita"];
+      seções.forEach(sec => document.getElementById(sec).style.display = "none");
+      document.getElementById(id).style.display = "block";
+      toggleMenu();
+    }
+
+    function mostrarRestrita() {
+      const nome = prompt("Digite seu nome:");
+      if (nome) {
+        document.getElementById("boasVindas").innerText = "Seja bem-vindo, " + nome + "!";
+        mostrarConteudo("restrita");
+      }
+    }
+
+    function fazerLogoff() {
+      mostrarConteudo("inicio");
+    }
+
+    function validarFormulario() {
+      let nome = document.getElementById("nome").value.trim();
+      let email = document.getElementById("email").value.trim();
+      let assunto = document.getElementById("assunto").value.trim();
+      let mensagem = document.getElementById("mensagem").value.trim();
+
+      let erro = false;
+
+      document.querySelectorAll(".erro").forEach(div => div.innerText = "");
+
+      if (nome === "") {
+        document.getElementById("erro-nome").innerText = "Por favor, preencha o nome.";
+        erro = true;
+      }
+
+      if (!email.includes("@")) {
+        document.getElementById("erro-email").innerText = "E-mail inválido.";
+        erro = true;
+      }
+
+      if (assunto === "") {
+        document.getElementById("erro-assunto").innerText = "Preencha o assunto.";
+        erro = true;
+      }
+
+      if (mensagem === "") {
+        document.getElementById("erro-mensagem").innerText = "Digite uma mensagem.";
+        erro = true;
+      }
+
+      if (!erro) {
+        alert("Mensagem enviada com sucesso!");
+        document.querySelector("form").reset();
+        mostrarConteudo("inicio");
+      }
+
+      return false;
+    }
+
+    // Exibir início por padrão
+    mostrarConteudo("inicio");
+  </script>
+</body>
+</html>
