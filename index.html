@@ -120,12 +120,12 @@
 <body>
 
   <div class="sidebar" id="sidebar">
-    <a href="#" onclick="mostrarConteudo('inicio')">Início</a>
+    <a href="#" onclick="mostrarConteudo('inicio'); toggleMenu();">Início</a>
     <a href="#">Blog</a>
     <a href="#">Fórum</a>
-    <a href="#" onclick="mostrarConteudo('contato')">Contato</a>
+    <a href="#" onclick="mostrarConteudo('contato'); toggleMenu();">Contato</a>
     <a href="#">Loja</a>
-    <a href="#" onclick="mostrarRestrita()">Minha conta</a>
+    <a href="#" onclick="mostrarRestrita();">Minha conta</a>
   </div>
 
   <header>
@@ -179,7 +179,6 @@
       const seções = ["inicio", "contato", "restrita"];
       seções.forEach(sec => document.getElementById(sec).style.display = "none");
       document.getElementById(id).style.display = "block";
-      toggleMenu();
     }
 
     function mostrarRestrita() {
@@ -187,6 +186,7 @@
       if (nome) {
         document.getElementById("boasVindas").innerText = "Seja bem-vindo, " + nome + "!";
         mostrarConteudo("restrita");
+        toggleMenu();
       }
     }
 
@@ -233,8 +233,10 @@
       return false;
     }
 
-    // Exibir início por padrão
-    mostrarConteudo("inicio");
+    // Exibir apenas o conteúdo "inicio" ao carregar
+    window.onload = function() {
+      mostrarConteudo("inicio");
+    }
   </script>
 </body>
 </html>
